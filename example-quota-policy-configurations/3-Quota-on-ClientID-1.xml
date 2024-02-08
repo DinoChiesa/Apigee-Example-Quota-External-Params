@@ -1,0 +1,19 @@
+<Quota name='Quota-on-ClientID-1'>
+
+  <!--
+      This is a default Quota type, so ...  the interval
+      starts at the start of each time unit (minute/hour/day).
+  -->
+
+  <Identifier ref='client_id' />
+
+  <Interval>1</Interval>
+
+  <Allow countRef='tiered-allow-count' count='10'/>
+
+  <TimeUnit ref='tiered-timeunit'>minute</TimeUnit>
+
+  <Distributed>true</Distributed>
+  <Synchronous>true</Synchronous>
+  <PreciseAtSecondsLevel>false</PreciseAtSecondsLevel>
+</Quota>

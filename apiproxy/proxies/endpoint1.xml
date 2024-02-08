@@ -1,0 +1,107 @@
+<ProxyEndpoint name="endpoint1">
+  <Description>Proxy Endpoint 1</Description>
+
+  <HTTPProxyConnection>
+    <BasePath>/lookup-quota-externally</BasePath>
+  </HTTPProxyConnection>
+
+  <FaultRules>
+    <FaultRule name='rule1'>
+      <Step>
+        <Name>JS-Compute-Expiry-Reset-Time</Name>
+      </Step>
+      <Condition>fault.name = "QuotaViolation"</Condition>
+    </FaultRule>
+  </FaultRules>
+
+  <DefaultFaultRule name="default-fault-rule">
+    <Step>
+      <Name>AM-Inject-Proxy-Revision-Header</Name>
+    </Step>
+
+    <Step>
+      <Name>AM-Rate-Limit-Header</Name>
+      <Condition>ratelimit.Quota-on-ClientID-1.allowed.count != null</Condition>
+    </Step>
+
+    <AlwaysEnforce>true</AlwaysEnforce>
+  </DefaultFaultRule>
+
+  <PreFlow name="PreFlow">
+    <Request>
+      <Step>
+        <Name>VerifyAPIKey-1</Name>
+      </Step>
+      <!-- This lookup should be cached! -->
+      <Step>
+        <Name>SC-Lookup-Limits</Name>
+      </Step>
+      <Step>
+        <Name>JS-Parse-Tier-Limit</Name>
+      </Step>
+      <Step>
+        <Name>Quota-on-ClientID-1</Name>
+      </Step>
+      <Step>
+        <Name>JS-Compute-Expiry-Reset-Time</Name>
+      </Step>
+    </Request>
+    <Response>
+      <Step>
+        <Name>AM-Clean-Request-Headers-From-Response</Name>
+      </Step>
+    </Response>
+  </PreFlow>
+
+  <PostFlow name="PostFlow">
+    <Request>
+    </Request>
+
+    <Response>
+      <Step>
+        <Name>AM-Inject-Proxy-Revision-Header</Name>
+      </Step>
+
+      <Step>
+        <Name>AM-Rate-Limit-Header</Name>
+        <Condition>ratelimit.Quota-on-ClientID-1.allowed.count != null</Condition>
+      </Step>
+
+    </Response>
+  </PostFlow>
+
+  <PostClientFlow name="PostClientFlow">
+    <Request>
+    </Request>
+    <Response>
+    </Response>
+  </PostClientFlow>
+
+  <Flows>
+
+    <Flow name="flow1">
+      <Request>
+      </Request>
+      <Response>
+        <Step>
+          <Name>AM-Response</Name>
+        </Step>
+      </Response>
+      <Condition>(proxy.pathsuffix MatchesPath "/t1") and (request.verb = "GET")</Condition>
+    </Flow>
+
+    <Flow name="unknown request">
+      <Request>
+        <Step>
+          <Name>RF-Unknown-Request</Name>
+        </Step>
+      </Request>
+      <Response>
+      </Response>
+    </Flow>
+
+  </Flows>
+
+  <RouteRule name="NoRouteRule"/>
+
+</ProxyEndpoint>

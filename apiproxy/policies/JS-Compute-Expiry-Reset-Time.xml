@@ -1,0 +1,14 @@
+<Javascript name='JS-Compute-Expiry-Reset-Time'>
+  <Source><![CDATA[
+
+// compute number of seconds til quota reset
+var expiry = Number(context.getVariable('ratelimit.Quota-on-ClientID-1.expiry.time'));
+var now = (new Date()).valueOf();
+var resetTime = Number((expiry - now)/1000).toFixed(0);
+
+// this sets a "context variable", which is used later in an AssignMessage policy
+context.setVariable('seconds-til-quota-reset', resetTime);
+
+]]>
+  </Source>
+</Javascript>

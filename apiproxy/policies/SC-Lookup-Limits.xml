@@ -1,0 +1,19 @@
+<ServiceCallout name='SC-Lookup-Limits'>
+  <Request variable='simpleGetRequest'>
+    <Set>
+      <Verb>GET</Verb>
+      <Path>/tier-service-levels/limits</Path>
+    </Set>
+  </Request>
+  <Response>limitResponse</Response>
+  <HTTPTargetConnection>
+    <SSLInfo>
+      <Enabled>true</Enabled>
+      <IgnoreValidationErrors>false</IgnoreValidationErrors>
+    </SSLInfo>
+    <Properties>
+      <Property name='success.codes'>2xx</Property>
+    </Properties>
+    <URL>https://remote-service.goes-here.com</URL>
+  </HTTPTargetConnection>
+</ServiceCallout>

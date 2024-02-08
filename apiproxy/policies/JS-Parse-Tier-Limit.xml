@@ -1,0 +1,16 @@
+<Javascript name='JS-Parse-Tier-Limit'>
+  <Source><![CDATA[
+
+var c = JSON.parse(context.getVariable('limitResponse.content'));
+var tier = context.getVariable('verifyapikey.VerifyAPIKey-1.tier');
+if (c && c.rateLimitForTiers && tier && c.rateLimitForTiers[tier]) {
+  var values = c.rateLimitForTiers[tier].split('/');
+  if (values.length == 2) {
+    context.setVariable('tiered-allow-count', values[0]);
+    context.setVariable('tiered-timeunit', values[1]);
+  }
+}
+
+]]>
+  </Source>
+</Javascript>

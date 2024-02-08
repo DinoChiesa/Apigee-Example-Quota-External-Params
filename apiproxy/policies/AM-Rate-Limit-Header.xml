@@ -1,0 +1,21 @@
+<AssignMessage name='AM-Rate-Limit-Header'>
+  <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+
+  <AssignVariable>
+    <Name>iso8601Format</Name>
+    <Value>yyyy-MM-dd'T'HH:mm:ss'Z'</Value>
+  </AssignVariable>
+
+  <!-- because this policy gets attached to the response flow, it sets http headers in the response -->
+  <Set>
+    <Headers>
+      <!-- set the RateLimit header that complies with the IETF draft standard -->
+      <Header name='Ratelimit'>limit={ratelimit.Quota-on-ClientID-1.allowed.count}, remaining={ratelimit.Quota-on-ClientID-1.available.count}, reset={seconds-til-quota-reset}</Header>
+
+      <!-- set a convenience header with the formatted reset time, for human interpretation, demo purposes  -->
+      <Header name='quota-reset'>{timeFormatUTCMs(iso8601Format,ratelimit.Quota-on-ClientID-1.expiry.time)}</Header>
+
+    </Headers>
+  </Set>
+
+</AssignMessage>

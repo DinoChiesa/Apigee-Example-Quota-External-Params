@@ -1,0 +1,36 @@
+<Quota name='Quota-on-ClientID-1'>
+
+  <!--
+      This is a default Quota type, so ...  the interval
+      starts at the start of each time unit (minute/hour/day).
+  -->
+
+  <Identifier ref='client_id' />
+
+  <Interval>1</Interval>
+
+  <Allow countRef='tiered-allow-count' count='10'/>
+
+  <TimeUnit ref='tiered-timeunit'>minute</TimeUnit>
+
+  <Distributed>true</Distributed>
+  <Synchronous>true</Synchronous>
+  <PreciseAtSecondsLevel>false</PreciseAtSecondsLevel>
+  <!--
+      variables set by this policy include:
+
+      ratelimit.{policy_name}.allowed.count
+      ratelimit.{policy_name}.used.count
+      ratelimit.{policy_name}.available.count
+      ratelimit.{policy_name}.exceed.count
+      ratelimit.{policy_name}.total.exceed.count
+      ratelimit.{policy_name}.expiry.time
+      ratelimit.{policy_name}.identifier
+      ratelimit.{policy_name}.class
+      ratelimit.{policy_name}.class.allowed.count
+      ratelimit.{policy_name}.class.used.count
+      ratelimit.{policy_name}.class.available.count
+      ratelimit.{policy_name}.class.exceed.count
+      ratelimit.{policy_name}.class.total.exceed.count
+  -->
+</Quota>
