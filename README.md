@@ -33,14 +33,19 @@ I won't outline the EXACT set of steps, but I'll describe them for you.
 3. You need a remote service, that returns a simple JSON that looks like
    ```json
    {
-     "tier1": "10/minute",
-     "tier2": "20/minute",
-     "tier3": "50/minute"
+     "rateLimitForTiers": {
+       "tier1": "10/minute",
+       "tier2": "20/minute",
+       "tier3": "50/minute"
+     }
    }
    ```
-   It should have at least three fields {`tier1`, `tier2`, `tier3`}, and the value of
-   each field should be a string of the form `"NUM/TIMEUNIT"` where the `NUM`
-   is an integer and the timeunit is one of `minute`, `hour`, `day`.
+   
+   It must have a toplevel field named `rateLimitForTiers`, and it can have
+   other toplevel fields. Within `rateLimitForTiers` it should have at least the
+   three fields {`tier1`, `tier2`, `tier3`}, and the value of each field should
+   be a string of the form `"NUM/TIMEUNIT"` where the `NUM` is an integer and
+   the timeunit is one of `minute`, `hour`, `day`.
 
    The service can vary the values over time, but the structure should remain the same.
 
